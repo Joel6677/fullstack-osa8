@@ -148,7 +148,7 @@ const resolvers = {
 
         const book = new Book({
           ...args,
-          author: author
+          author: newAuthor
         })
 
         try {

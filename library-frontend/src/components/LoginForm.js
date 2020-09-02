@@ -6,7 +6,7 @@ const LoginForm = ({ setToken, setPage, show }) => {
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [err, setError] = useState('')
+  const [error, setError] = useState('')
 
   const [login, result] = useMutation(LOGIN, 
     {
@@ -20,13 +20,16 @@ const LoginForm = ({ setToken, setPage, show }) => {
       console.log('-->', result.data)
       const token = result.data.login.value
       setToken(token)
-      localStorage.setItem('gql-lib-utoken', token)
+      localStorage.setItem('library-user-token', token)
     }
   }, [result.data])
 
   const submit = async (event) => {
     event.preventDefault()
-    login({ variables: { username, password}})
+
+    login({
+       variables: { username, password}
+      })
     
     setPage('authors')
   }
@@ -49,6 +52,7 @@ const LoginForm = ({ setToken, setPage, show }) => {
         <div>
           password:
           <input
+          type='password'
           value={password}
           onChange={({ target }) => setPassword(target.value)}
           />
@@ -56,7 +60,7 @@ const LoginForm = ({ setToken, setPage, show }) => {
         <button type='submit'>Login</button>
       </form>
       <div>
-        {err}
+        {error}
       </div>
     </div>
   )

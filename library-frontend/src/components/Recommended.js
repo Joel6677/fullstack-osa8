@@ -3,17 +3,15 @@ import { useQuery, useLazyQuery } from '@apollo/client'
 import { ME, BOOKS_BY_GENRE } from '../queries'
 
 const Recommended = (props) => {
-  const res = useQuery(ME)
-  const [bBGres, {data}] = useLazyQuery(BOOKS_BY_GENRE, {fetchPolicy: "no-cache"})
+  const response = useQuery(ME)
+  const [getBBG, {data}] = useLazyQuery(BOOKS_BY_GENRE, {fetchPolicy: "no-cache"})
   const [books, setBooks] = useState('')
 
-  console.log('me', res.data)
-
   useEffect(() => {
-    if (res.data) {
-      bBGres({variables: {genre: res.data.me.favoriteGenre}})
+    if (response.data) {
+      getBBG({variables: {genre: response.data.me.favoriteGenre}})
     }
-  }, [res, bBGres])
+  }, [response, getBBG])
 
   useEffect(() => {
     if (data && data.allBooks) {
@@ -25,7 +23,7 @@ const Recommended = (props) => {
     return null
   }
 
-  if (res.loading || !res.data) {
+  if (response.loading || !response.data) {
     return (
       <div>
         loading...
@@ -36,7 +34,7 @@ const Recommended = (props) => {
   return (
     <div>
       <h2>recommendations</h2>
-      <p>books in your favorite genre {res.data.me.favoriteGenre}:</p>
+      <p>books in your favorite genre {response.data.me.favoriteGenre}:</p>
       <table>
         <tbody>
           <tr>
